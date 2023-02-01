@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class="shadow p-4 mb-5 bg-body rounded">
+      <h2>Profile Creation</h2>
+      <form action="{% url 'create_profile' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br></br>
+        <button type="submit" class="btn btn-primary">Create My Profile</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="shadow p-4 mb-5 bg-body rounded">
+      <h2>Access Denied.</h2>
+      <p>You must register before you can create a profile.</p>
+      <p>If you're already registered, log in to edit your profile.</p>
+      <a href="{% url 'register_user' %}">Register</a><br>
+      <a href="{% url 'login' %}">Login</a><br>
+      <a href="{% url 'home' %}">Home</a>
+    </div>
+  {% endif %}
+{% endblock %}

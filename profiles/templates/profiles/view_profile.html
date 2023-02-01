@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+       crossorigin=""></script>
+</head>
+<style>
+  #map{
+    height: 300px;
+    width: 300px;
+    left: 10px;
+  }
+</style>
+{% if user.is_authenticated %}
+    <div class="shadow p-4 mb-5 bg-body rounded">
+      <h2>Profile Information</h2>
+      <p>Username: {{ user.username }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Phone number: {{ profile.phone }}</p>
+      <p id="phone_carrier">Phone Carrier:</p>
+      <p>Location name: {{ profile.location_name }}</p>
+      <div id="map"></div>
+      <a href="{% url 'edit_profile' %}">Edit Profile</a>
+      <a href="{% url 'home' %}">Home</a>
+    </div>
+  {% else %}
+    <div class="shadow p-4 mb-5 bg-body rounded">
+      <h2>Access Denied.</h2>
+      <p>You must register and/or log in before you can edit your profile.</p>
+      <a href="{% url 'register_user' %}">Register</a><br>
+      <a href="{% url 'login' %}">Login</a><br>
+      <a href="{% url 'home' %}">Home</a>
+    </div>
+  {% endif %}
+
+  <script>
+    var lat = {{ profile.lat }}
+    var lon = {{ profile.lon }}
+    var carrier = "{{ profile.carrier }}";
+    var loc_name = "{{ profile.location_name }}";
+
+    function displayCarrier(carrier){
+      var text = document.getElementById("phone_carrier");
+      if (carrier == "att"){
+        text.innerHTML = "Phone Carrier: AT&T";
+      } else if (carrier == "verizon"){
+        text.innerHTML = "Phone Carrier: Verizon";
+      } else if (carrier == "spring"){
+        text.innerHTML = "Phone Carrier: Sprint";
+      } else if (carrier == "tmobile"){
+        text.innerHTML = "Phone Carrier: T-Mobile";
+      } else if (carrier == "boostmobile"){
+        text.innerHTML = "Phone Carrier: Boost Mobile";
+      } else {
+        text.innerHTML = `Phone Carrier: ${carrier}`;
+      }
+    }
+
+    var map = L.map('map').setView([lat,lon], 8);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var marker = new L.circleMarker([lat,lon], { radius: 6, color: "black", weight: 2, opacity: 1.0, fillColor: "blue", fillOpacity: 0.4 }); //opacity may be set to zero
+    marker.addTo(map);
+
+    var textmarker = new L.marker([lat, lon], { opacity: 0.0 });
+    textmarker.bindTooltip(
+        `<div>
+             ${loc_name}
+        </div>`,
+        {direction:'left', permanent: false}
+    );
+    textmarker.addTo(map);
+
+    displayCarrier(carrier);
+  </script>
+{% endblock %}

@@ -1,0 +1,120 @@
+body{
+	background-color: #333c4aff;
+}
+
+#logo_holder{
+	position: absolute;
+	left: -90px;
+	top: -30px;
+	height: 300px;
+	width: 300px;
+	z-index: -1;
+}
+
+#logo{
+	height: 400px;
+	width: 400px;
+}
+
+#image_bar{
+	position: absolute;
+	top: 90px;
+	left: 0px;
+	height: 150px;
+	width: 100%;
+	background-color: black;
+	z-index: -2;
+}
+
+.bar_img{
+	height: 140px;
+	width: 200px;
+	border-radius: 25px;
+  	border: 2px solid black;
+}
+
+#bar_img1{
+	position: absolute;
+	left: 550px;
+	top: 5px;
+}
+
+#bar_img2{
+	position: absolute;
+	left: 800px;
+	top: 5px;
+}
+
+#bar_img3{
+	position: absolute;
+	left: 1050px;
+	top: 5px;
+}
+
+.bar_text{
+	color: white;
+}
+
+#name{
+	position: absolute;
+	left: 250px;
+	top: 10px;	
+	font-size: 60px;
+	font-style: italic;
+}
+
+#slogan{
+	position: absolute;
+	left: 220px;
+	top: 80px;
+	font-size: 32px;	
+}
+
+#text_info{
+	position: absolute;
+	left: 250px;
+	top: 275px;
+	height: 200px;
+	width: 600px;
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	padding-right: 50px;
+}
+
+#cell_phone{
+	position: absolute;
+	left: 800px;
+	top: 275px;
+	height: 250px;
+	width: 150px;
+	transform: rotate(15deg);
+}
+
+.index_button{
+	background-color: #666666;
+	color: white;
+	height: 50px;
+	width: 180px;
+	border-radius: 10px;
+  	border: 1px solid black;
+}
+
+.index_button:hover{
+	background-color: #d5d5d5;
+	color: black;
+}
+
+#works{
+	position: absolute;
+	left:450px;
+	top: 540px;
+	padding-right: 5px;
+}
+
+#register{
+	position: absolute;
+	left:450px;
+	top: 600px;
+	font-size: 24px;
+}

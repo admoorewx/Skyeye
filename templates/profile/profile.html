@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Welcome {{ profile.username }}</h3>
+<p>Here are your user settings</p>
+<p>Username: {{ profile.username }}</p>
+<p>Phone Number: {{ profile.phone }}</p>
+<p>Email: {{ profile.email }}</p>
+<p>Location: {{ profile.location_name }}</p>
+<p>Address: {{ profile.address }}</p>
+<p>Lat,Lon: {{ profile.lat }}, {{ profile.lon }}</p>
+
+{% endblock %}

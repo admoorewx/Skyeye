@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Create a Profile</h3>
+<!-- use action="url" in the form tag to direct users to follow-up screen after form submission. -->
+<form action="/profile_creation_successful/" method=POST> {% csrf_token %}
+	{{ form.as_p }}
+	<input type='submit' value='Save'>
+</form>
+
+{% endblock %}
