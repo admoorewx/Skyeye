@@ -16,7 +16,7 @@ CARRIERS = {
 }
 
 EMAIL = "skyeyealerts@gmail.com"
-PASSWORD = "nbcywjkhqwnyidsn"
+PASSWORD = ""
 
 def send_message(phone_number, carrier, message):
     recipient = phone_number + CARRIERS[carrier]
