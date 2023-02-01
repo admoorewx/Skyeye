@@ -25,4 +25,4 @@ def send_message(phone_number, carrier, message):
     server.starttls()
     server.login(auth[0], auth[1])
     server.sendmail(auth[0], recipient, message)
-#send_message("4795979545","att","Get to work!")
+#send_message("<number>","att","Get to work!")
