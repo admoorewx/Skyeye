@@ -35,19 +35,22 @@ body{
 
 #bar_img1{
 	position: absolute;
-	left: 550px;
+	/* left: 550px; */
+	left: 35vw;
 	top: 5px;
 }
 
 #bar_img2{
 	position: absolute;
-	left: 800px;
+	/* left: 800px; */
+	left: 50vw;
 	top: 5px;
 }
 
 #bar_img3{
 	position: absolute;
-	left: 1050px;
+	/* left: 1050px; */
+	left: 65vw;
 	top: 5px;
 }
 
@@ -58,7 +61,7 @@ body{
 #name{
 	position: absolute;
 	left: 250px;
-	top: 10px;	
+	top: 10px;
 	font-size: 60px;
 	font-style: italic;
 }
@@ -67,12 +70,13 @@ body{
 	position: absolute;
 	left: 220px;
 	top: 80px;
-	font-size: 32px;	
+	font-size: 32px;
 }
 
 #text_info{
 	position: absolute;
-	left: 250px;
+	/* left: 250px; */
+	left: 25vw;
 	top: 275px;
 	height: 200px;
 	width: 600px;
@@ -84,7 +88,8 @@ body{
 
 #cell_phone{
 	position: absolute;
-	left: 800px;
+	/* left: 800px; */
+	left: 55vw;
 	top: 275px;
 	height: 250px;
 	width: 150px;
