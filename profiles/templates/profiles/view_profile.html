@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <head>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -7,33 +8,44 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
        crossorigin=""></script>
+  <link href="{% static 'view_profile.css' %}" rel="stylesheet">
+  <script type="text/javascript" src="{% static 'view_profile.js' %}"></script>
 </head>
-<style>
-  #map{
-    height: 300px;
-    width: 300px;
-    left: 10px;
-  }
-</style>
 {% if user.is_authenticated %}
-    <div class="shadow p-4 mb-5 bg-body rounded">
-      <h2>Profile Information</h2>
-      <p>Username: {{ user.username }}</p>
-      <p>Email: {{ user.email }}</p>
-      <p>Phone number: {{ profile.phone }}</p>
-      <p id="phone_carrier">Phone Carrier:</p>
-      <p>Location name: {{ profile.location_name }}</p>
+    <div id="view_content">
+      <h2>{{ user.username }}'s Profile</h2>
+      <div id="text">
+        <p>Email: {{ user.email }}</p>
+        <p>Phone number: {{ profile.phone }}</p>
+        <p id="phone_carrier">Phone Carrier:</p>
+        <p>Location name: {{ profile.location_name }}</p>
+      </div>
+      <div id="NWStext">
+          <a id="hwo" class="link" href="">Hazardous Weather Outlook</a><br><br />
+          <a id="localwfo" class="link" href="">Your local NWS office</a><br><br />
+          <a id="localforecast" class="link" href="">Your local forecast</a>
+      </div>
+      <div id="news_ticker_bar">
+        <p id="news_message">
+          Loading the latest alerts...
+        </p>
+      </div>
       <div id="map"></div>
-      <a href="{% url 'edit_profile' %}">Edit Profile</a>
-      <a href="{% url 'home' %}">Home</a>
+      <br>
+      <div id="lower_buttons">
+        <a class="link" href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a class="link" href="{% url 'home' %}">Home</a>
+      </div>
     </div>
   {% else %}
-    <div class="shadow p-4 mb-5 bg-body rounded">
+    <div id="dont_view">
       <h2>Access Denied.</h2>
-      <p>You must register and/or log in before you can edit your profile.</p>
-      <a href="{% url 'register_user' %}">Register</a><br>
-      <a href="{% url 'login' %}">Login</a><br>
-      <a href="{% url 'home' %}">Home</a>
+      <p>You must register and/or log in before you can view your profile.</p>
+      <div id="lower_buttons_denied">
+        <a class="link" href="{% url 'register_user' %}">Register</a>
+        <a class="link" href="{% url 'login' %}">Login</a>
+        <a class="link" href="{% url 'home' %}">Home</a>
+      </div>
     </div>
   {% endif %}
 
@@ -60,12 +72,19 @@
       }
     }
 
+    //////////////////////////////////////////////////// Map initialization ///////////////////////////////////////////////
     var map = L.map('map').setView([lat,lon], 8);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    var hazards = L.tileLayer.wms(
+        "https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Forecasts_Guidance_Warnings/watch_warn_adv/MapServer/WMSServer",
+        {"format": "image/png", "layers": "0", "opacity": 0.5, "transparent": true, "zIndex":"9"}
+    ).addTo(map);
+
+    //////////////////////////////////////////////////// Add location Marker ///////////////////////////////////////////////
     var marker = new L.circleMarker([lat,lon], { radius: 6, color: "black", weight: 2, opacity: 1.0, fillColor: "blue", fillOpacity: 0.4 }); //opacity may be set to zero
     marker.addTo(map);
 
@@ -77,7 +96,194 @@
         {direction:'left', permanent: false}
     );
     textmarker.addTo(map);
-
+    //////////////////////////////////////////////////// Display Phone Carrier ///////////////////////////////////////////////
     displayCarrier(carrier);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////// NWS WARNINGS ////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var current_warnings = new L.geoJSON().addTo(map);
+    function hazard_color(hazard){
+      let color = return_hazard_color(hazard);
+      hazard.setStyle({
+        color: color,
+        weight: 2,
+        opacity: 1.0,
+        fillColor: color,
+        fillOpacity: 0.25,
+      });
+    } // end hazard_color function
+  ////////////////////////////////////////////////////////////////////////////////
+    function nws_alerts(warning_list){
+      valid_alerts = ["Special Marine Warning", "Tornado Warning", "Severe Thunderstorm Warning", "Flash Flood Warning"];
+      var alert_url = "https://api.weather.gov/alerts/active";
+      var request = new XMLHttpRequest();
+      request.open("GET",alert_url, false);
+      request.send(null);
+      data = JSON.parse(request.response);
+      alerts = data.features;
+      alerts.forEach(function(alert){
+        if (valid_alerts.includes(alert.properties.event)){
+          // VTEC 6+: .KLMK.SV.W.0194.220706T2106Z-220706T2145Z/
+          id = alert.properties.parameters.VTEC[0].substring(6,22);
+          if (alert.properties.parameters.VTEC[0].includes("CAN")){
+            // Find the old alert and remove it.
+            current_warnings.eachLayer(function(layer){
+              if (layer.feature.properties.parameters.VTEC[0].substring(6,22) == id){
+                // we found a match, remove it.
+                current_warnings.removeLayer(layer);
+              }// end if
+            }); // end eachLayer
+          } // end if
+          else if (alert.properties.parameters.VTEC[0].includes("CON")){
+            // This is a warning update/continuation. We need to clear our the old
+            // warning and plot the new one (though we won't zoom in).
+            // First, see if the warning is already in the warning_list.
+            // It may not be if this is the first time the page is loaded.
+            if (warning_list.includes(id)){
+              // Loop through the layers in the geoJSON layer to find the matching id,
+              // remove that layer, then replace it with the continuation alert.
+              current_warnings.eachLayer(function(layer){
+                if (layer.feature.properties.parameters.VTEC[0].substring(6,22) == id){
+                  // we found a match, remove it.
+                  current_warnings.removeLayer(layer);
+                  // replace it with the new alert
+                  current_warnings.addData(alert);
+                  //update_text(alert)
+                }// end if
+              }); // end eachFeature
+            } // end if
+            // If it's not in the list, then it's probably the initial page load, go ahead and add it.
+            else {
+              current_warnings.addData(alert);
+              warning_list.push(id);
+            } // end else
+          } // end else if
+          else if (warning_list.includes(id)){
+            // do nothing, this alert has already been added.
+          } // end else if
+          else {
+            warning_list.push(id);
+            //console.log(alert);
+            current_warnings.addData(alert);
+          } // end else
+        } // end if valid alert
+      }); // end alerts.forEach
+      // run a function that matches the color with the right hazards
+      current_warnings.eachLayer(function(layer){
+        hazard_color(layer);
+        text = layer.feature.properties.description.replace(/\n/g,"</br>");
+        layer.bindPopup(text,{minWidth:400});
+      });
+      return warning_list;
+    } // end function
+  ////////////////////////////////////////////////////////////////////////////////
+    function cleanse_warnings(geojson_layer){
+      // Convert the expiration time to epoch time
+      // then convert current time to epoch time, if the warning has expired,
+      // clear it from the geoJSON layer.
+      geojson_layer.eachLayer(function(layer){
+        let expire_time = layer.feature.properties.expires;
+        let expire_datetime = datetime_to_epoch(expire_time);
+        let current_datetime = new Date().getTime();
+        if (expire_datetime < current_datetime){
+          //console.log(expire_datetime,current_datetime);
+          geojson_layer.removeLayer(layer);
+        }
+      });
+    } // end function
+  ////////////////////////////////////////////////////////////////////////////////
+    var warning_list = [];
+    warning_list = nws_alerts(warning_list);
+    setInterval(function() {
+      warning_list = nws_alerts(warning_list);
+      cleanse_warnings(current_warnings);
+    }, 10000); // every 5 seconds
+    // Clock
+    // setInterval(function(){
+    //   currentTime();
+    // },1000);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////// Looping radar ////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const OPACITY = 0.65;
+    function generateLayers(){
+      const NEXRAD_URL = `https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi`;
+      const NEXRAD_LAYER = `nexrad-n0q-900913`;
+      let timeLayers = [];
+      const TOTAL_INTERVALS = 10;
+      const INTERVAL_LENGTH_HRS = 5;
+      const ZINDEX = 10;
+      const currentTime = new Date();
+      for (let i = 0; i <= TOTAL_INTERVALS; i++) {
+          const timeDiffMins =
+              TOTAL_INTERVALS * INTERVAL_LENGTH_HRS -
+              INTERVAL_LENGTH_HRS * i;
+          const suffix = (function(time) {
+              switch(time) {
+                  case 0:
+                      return '';
+                  case 5:
+                      return '-m05m';
+                  default:
+                      return '-m' + time + 'm';
+              }
+              })(timeDiffMins);
+          const layerRequest = NEXRAD_LAYER + suffix;
+          const layer = L.tileLayer.wms(NEXRAD_URL, {
+              layers: layerRequest,
+              format: `image/png`,
+              transparent: true,
+              opacity: OPACITY,
+              zIndex: ZINDEX
+          });
+          const timeString = new Date(
+              currentTime.valueOf() - timeDiffMins * 60 * 1000
+          ).toLocaleTimeString();
+          timeLayers.push({
+              timestamp: `${timeString} (-${timeDiffMins} min)`,
+              tileLayer: layer
+          });
+      }
+      return timeLayers;
+    }
+  ////////////////////////////////////////////////////////////////////////////////
+    var radar_layers = generateLayers();
+    const transitionTime = 500; // ms
+    var index = 0;
+    // add layers to map
+    radar_layers.forEach(layer =>{
+      layer.tileLayer.setOpacity(0);
+      layer.tileLayer.addTo(map);
+    });
+    setInterval(function(){
+      let past_index = index - 1;
+      if (past_index < 0){
+        past_index = radar_layers.length - 1;
+      }
+      // hide previous layer
+      radar_layers[past_index].tileLayer.setOpacity(0);
+      // show current layer
+      radar_layers[index].tileLayer.setOpacity(OPACITY);
+      // increment
+      index++;
+      if (index >= radar_layers.length){
+        index = 0;
+      }
+    },transitionTime);
+  /////////////////////////////////////////////////////////////////// NWS HEADLINE INFO /////////////////////////////////////////////////////////////////////////
+  updateCrawlerText(lat,lon);
+  metadata = get_point_metadata(lat,lon);
+  var wfo = metadata.properties.cwa;
+  var forecasturl = `https://forecast.weather.gov/MapClick.php?lon=${lon}&lat=${lat}`;
+  var hwourl = `https://forecast.weather.gov/wwamap/wwatxtget.php?cwa=${wfo}&wwa=hazardous%20weather%20outlook`;
+  var wfourl = `https://www.weather.gov/${wfo}`;
+  document.getElementById("hwo").setAttribute('href',hwourl);
+  document.getElementById("localwfo").setAttribute('href',wfourl);
+  document.getElementById("localforecast").setAttribute('href',forecasturl);
+  /// URL for point/click forecast link: https://forecast.weather.gov/MapClick.php?lon=${lon}&lat=${lat}
+  /// URL for HWO: https://forecast.weather.gov/wwamap/wwatxtget.php?cwa=${WFO}&wwa=hazardous%20weather%20outlook
+  ////////////////////////////////////////////////////////////////////////////////
+
+
   </script>
 {% endblock %}

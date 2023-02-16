@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-  <!-- /profiles/templates/authenticate/login.html -->
-  <h2>Log In - Authenticate</h2>
-
+{% load static %}
+<header>
+	<link href="{% static 'login.css' %}" rel="stylesheet">
+</header>
+<div id="login_content">
+  <h2>Sky Eye Log In</h2>
   <form method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -19,4 +22,5 @@
     <br/>
     <p>Forgot your password? <a href="{% url 'reset_password' %}">Click here.</a></p>
   </form>
+</div>
 {% endblock %}

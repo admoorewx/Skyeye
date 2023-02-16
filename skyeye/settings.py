@@ -125,6 +125,7 @@ STATICFILES_DIRS = [
     os.path.join(STATIC_ROOT,'bootstrap-5.2.3'),
     os.path.join(STATIC_ROOT,'media'),
     os.path.join(STATIC_ROOT, 'css'),
+    os.path.join(STATIC_ROOT, 'javascript'),
 ]
 
 # Default primary key field type

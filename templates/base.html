@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-<head> 
+<head>
 	<title>Sky Eye</title>
 	{% load static %}
 	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
@@ -14,7 +14,7 @@
 	{% include 'navbar.html' %}
 	{% if messages %}
 		{% for message in messages %}
-			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<div style="z-index: 11;" class="alert alert-warning alert-dismissible fade show" role="alert">
 			  {{ message }}
 			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>

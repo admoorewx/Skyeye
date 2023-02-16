@@ -4,8 +4,8 @@ body{
 
 #logo_holder{
 	position: absolute;
-	left: -90px;
-	top: -30px;
+	left: -300px;
+	top: -125px;
 	height: 300px;
 	width: 300px;
 	z-index: -1;
@@ -16,7 +16,7 @@ body{
 	width: 400px;
 }
 
-#image_bar{
+#image_bar_background{
 	position: absolute;
 	top: 90px;
 	left: 0px;
@@ -26,31 +26,40 @@ body{
 	z-index: -2;
 }
 
+#image_bar{
+	position: absolute;
+	top: 0px;
+	left: 20vw;
+	height: 150px;
+	width: 60vw;
+	min-width: 1440px;
+}
+
 .bar_img{
 	height: 140px;
 	width: 200px;
 	border-radius: 25px;
-  	border: 2px solid black;
+  border: 2px solid black;
 }
 
 #bar_img1{
 	position: absolute;
-	/* left: 550px; */
-	left: 35vw;
+	left: 350px;
+	/* left: 35vw; */
 	top: 5px;
 }
 
 #bar_img2{
 	position: absolute;
-	/* left: 800px; */
-	left: 50vw;
+	left: 600px;
+	/* left: 30vw; */
 	top: 5px;
 }
 
 #bar_img3{
 	position: absolute;
-	/* left: 1050px; */
-	left: 65vw;
+	left: 850px;
+	/* left: 65vw; */
 	top: 5px;
 }
 
@@ -60,24 +69,38 @@ body{
 
 #name{
 	position: absolute;
-	left: 250px;
+	left: 30px;
 	top: 10px;
 	font-size: 60px;
 	font-style: italic;
+	padding-right: 20px;
 }
 
 #slogan{
 	position: absolute;
-	left: 220px;
+	left: 0px;
 	top: 80px;
 	font-size: 32px;
+	padding-right: 20px;
+}
+
+#details{
+	position: absolute;
+	top: 275px;
+	left: 20vw;
+	height: 600px;
+	width: 60vw;
+	min-width: 900px;
+	/* border-radius: 1px;
+	border-style: solid;
+	border-color: black; */
 }
 
 #text_info{
 	position: absolute;
 	/* left: 250px; */
-	left: 25vw;
-	top: 275px;
+	left: 5%;
+	top: 0px;
 	height: 200px;
 	width: 600px;
 	color: white;
@@ -89,11 +112,25 @@ body{
 #cell_phone{
 	position: absolute;
 	/* left: 800px; */
-	left: 55vw;
-	top: 275px;
+	right: 25%;
+	top: 10px;
 	height: 250px;
 	width: 150px;
 	transform: rotate(15deg);
+}
+
+#works{
+	position: absolute;
+	left:23%;
+	top: 300px;
+	padding-right: 5px;
+}
+
+#register{
+	position: absolute;
+	left:23%;
+	top: 370px;
+	font-size: 24px;
 }
 
 .index_button{
@@ -108,18 +145,4 @@ body{
 .index_button:hover{
 	background-color: #d5d5d5;
 	color: black;
-}
-
-#works{
-	position: absolute;
-	left:450px;
-	top: 540px;
-	padding-right: 5px;
-}
-
-#register{
-	position: absolute;
-	left:450px;
-	top: 600px;
-	font-size: 24px;
 }

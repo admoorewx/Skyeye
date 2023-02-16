@@ -4,31 +4,33 @@
 <header>
 	<link href="{% static 'index.css' %}" rel="stylesheet">
 </header>
-<div id="image_bar">
-	<h3 id="name" class="bar_text">SKY EYE</h3>
-	<h7 id="slogan" class="bar_text">Warning Text Service</h7>
-	<img id="bar_img1" class="bar_img" src="{% static 'tornado.JPG' %}">
-	<img id="bar_img2" class="bar_img" src="{% static 'supercell.JPG' %}">
-	<img id="bar_img3" class="bar_img" src="{% static 'hail.jpg' %}">
+<div id="image_bar_background">
+	<div id="image_bar">
+		<div id="logo_holder">
+			<img id="logo" src="{% static 'logo_2_circle.png' %}">
+		</div>
+		<h3 id="name" class="bar_text">SKY EYE</h3>
+		<h7 id="slogan" class="bar_text">Warning Text Service</h7>
+		<img id="bar_img1" class="bar_img" src="{% static 'tornado.JPG' %}">
+		<img id="bar_img2" class="bar_img" src="{% static 'supercell.JPG' %}">
+		<img id="bar_img3" class="bar_img" src="{% static 'hail.jpg' %}">
+	</div>
 </div>
-<div id="logo_holder">
-	<img id="logo" src="{% static 'logo_2_circle.png' %}">
+<div id="details">
+	<div id="text_info">
+		<h3>NWS Warning Text Service</h3>
+		<p>Receive warnings issued by your local National Weather Service office texted directly to your phone!</p>
+		<p>Get location-specific information for every:</p>
+		 <ul>
+		  <li>Tornado Warning</li>
+		  <li>Severe Thunderstorm Warning</li>
+		  <li>Flash Flood Warning</li>
+		</ul>
+	</div>
+	<img id="cell_phone" src="{% static 'cell_phone.png' %}">
+	<button type="submit" id="works" class="index_button" href="{% url 'home' %}">How Does This Work?</button>
+	<button type="button" id="register" class="index_button" onclick="window.location.href='{% url 'register_user' %}'">Sign Me Up!</button>
 </div>
 
-<div id="text_info">
-	<h3>NWS Warning Text Service</h3>
-	<p>Receive warnings issued by your local National Weather Service office texted directly to your phone!</p>	
-	<p>Get location-specific information for every:</p>
-	 <ul>
-	  <li>Tornado Warning</li>
-	  <li>Severe Thunderstorm Warning</li>
-	  <li>Flash Flood Warning</li>
-	</ul> 
-</div>
-
-<img id="cell_phone" src="{% static 'cell_phone.png' %}">
-
-<button type="submit" id="works" class="index_button" href="{% url 'home' %}">How Does This Work?</button>
-<button type="button" id="register" class="index_button" onclick="window.location.href='{% url 'register_user' %}'">Sign Me Up!</button>
 
 {% endblock %}

@@ -1,23 +1,123 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
+<header>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+       crossorigin=""></script>
+	<link href="{% static 'create_profile.css' %}" rel="stylesheet">
+</header>
   {% if user.is_authenticated %}
-    <div class="shadow p-4 mb-5 bg-body rounded">
+    <div id="create_content">
       <h2>Profile Creation</h2>
       <form action="{% url 'create_profile' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <br></br>
-        <button type="submit" class="btn btn-primary">Create My Profile</button>
+        <div id="text">
+          <p>Phone Number: {{ form.phone }}</p>
+          <label for="carriers">Phone Carrier:</label>
+          <select name="carriers" id="carrier_selection" onchange="UpdateCarrier()">
+            <option value="att">AT&T</option>
+            <option value="tmobile">T-Mobile</option>
+            <option value="verizon">Verizon</option>
+            <option value="sprint">Sprint</option>
+            <option value="boostmobile">Boost Mobile</option>
+          </select>
+          <br><br>
+          <p>Location Name: {{ form.location_name }}</p>
+        </div>
+        <p>Click and drag the marker below to your location.</p>
+        <div id="map"></div>
+        <br>
+        <p id="profile_lat" style="display:none">Latitude: {{ form.lat }}</p>
+        <p id="profile_lon" style="display:none">Longitude: {{ form.lon }}</p>
+        <p id="phone_carrier" style="display:none">{{ form.carrier }}</p>
+        <button id="submitbutton" type="submit" class="btn btn-primary">Continue</button>
       </form>
-    </div>
   {% else %}
-    <div class="shadow p-4 mb-5 bg-body rounded">
+    <div id="dont_create">
       <h2>Access Denied.</h2>
       <p>You must register before you can create a profile.</p>
       <p>If you're already registered, log in to edit your profile.</p>
-      <a href="{% url 'register_user' %}">Register</a><br>
-      <a href="{% url 'login' %}">Login</a><br>
-      <a href="{% url 'home' %}">Home</a>
+      <div id="lower_buttons_denied">
+        <a class="link" href="{% url 'register_user' %}">Register</a>
+        <a class="link" href="{% url 'login' %}">Login</a>
+        <a class="link" href="{% url 'home' %}">Home</a>
+      </div>
     </div>
   {% endif %}
+  <script>
+    var lat = 40.0
+    var lon = -98.0
+    var carrier = "{{ profile.carrier }}";
+    var loc_name = "{{ profile.location_name }}";
+    var map = L.map('map').setView([lat,lon], 4);
+
+    function setCarrier(carrier){
+      var selection_form = document.getElementById("carrier_selection");
+      selection_form.value = carrier;
+    }
+
+    function UpdateCarrier(){
+      var selection = document.getElementById("carrier_selection").value
+      document.getElementById("id_carrier").value = `${selection}`;
+    }
+
+    function roundTo(n, digits) {
+      // I stole this from here: https://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+      if (digits === undefined) {
+        digits = 0;
+      }
+      var multiplicator = Math.pow(10, digits);
+      n = parseFloat((n * multiplicator).toFixed(11));
+      var test = (Math.round(n) / multiplicator);
+      return +(test.toFixed(digits));
+    }
+
+    function updateLatLonText(lat,lon){
+      // Update the Lat/Lon text:
+      lat = roundTo(lat,3);
+      lon = roundTo(lon,3);
+      document.getElementById("id_lat").value = `${lat}`;
+      document.getElementById("id_lon").value = `${lon}`;
+      console.log(document.getElementById("id_lat").value,document.getElementById("id_lon").value)
+    }
+
+    function moveableMarker(map, marker) {
+      function trackCursor(evt) {
+        marker.setLatLng(evt.latlng)
+      }
+
+      marker.on("mousedown", () => {
+        map.dragging.disable()
+        map.on("mousemove", trackCursor)
+      })
+
+      marker.on("mouseup", () => {
+        map.dragging.enable()
+        map.off("mousemove", trackCursor)
+        lat = marker.getLatLng().lat;
+        lon = marker.getLatLng().lng;
+        updateLatLonText(lat,lon);
+      })
+
+      return marker
+    }
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var marker = new L.circleMarker([lat,lon], { radius: 6, color: "black", weight: 2, opacity: 1.0, fillColor: "blue", fillOpacity: 0.4 }); //opacity may be set to zero
+    marker.addTo(map);
+
+
+    movable = moveableMarker(map,marker)
+    updateLatLonText(lat,lon)
+    setCarrier(carrier);
+
+  </script>
 {% endblock %}
