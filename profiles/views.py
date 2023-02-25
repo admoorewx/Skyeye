@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .checks import valid_phone_number
 from .models import Profile
 from .forms import RegisterUserForm, CreateProfileForm, EditUserForm, EditProfileForm
 # Create your views here.
@@ -60,10 +61,14 @@ def create_profile(request,*args,**kwargs):
 		form = CreateProfileForm(request.POST)
 		if form.is_valid():
 			profile = form.save(commit=False)
-			profile.user_id = request.user.id
-			profile.save()
-			messages.success(request,"Profile creation successful! You will now receive Sky Eye alerts.")
-			return redirect('home')
+			if valid_phone_number(form.data['phone']):
+				profile.user_id = request.user.id
+				profile.save()
+				messages.success(request,"Profile creation successful! You will now receive Sky Eye alerts.")
+				return redirect('home')
+			else: 
+				messages.success(request,"Invalid phone number entered. Please check and try again.")
+				return redirect('create_profile')
 		else:
 			messages.success(request,"There was an error during profile creation.")
 			return redirect('create_profile')
@@ -108,7 +113,11 @@ def edit_profile(request,*args,**kwargs):
 				user.save()
 			profile = Profile.objects.get(user_id=request.user.id)
 			if form2.data['phone'] != profile.phone:
-				profile.phone = int(form2.data['phone'])
+				if valid_phone_number(form2.data['phone']):
+					profile.phone = int(form2.data['phone'])
+				else: 
+					messages.success(request,"Invalid phone number entered. Please check and try again.")
+					return redirect('edit_profile')
 			if form2.data['location_name'] != profile.location_name:
 				profile.location_name = form2.data['location_name']
 			if form2.data['carrier'] != profile.carrier:
