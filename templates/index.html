@@ -21,15 +21,20 @@
 		<h3>NWS Warning Text Service</h3>
 		<p>Receive warnings issued by your local National Weather Service office texted directly to your phone!</p>
 		<p>Get location-specific information for every:</p>
-		 <ul>
+		<p>Tornado Warning</p>
+		<p>Severe Thunderstorm Warning</p>
+		<p>Flash Flood Warning</p>
+		<div id="lower_buttons">
+			<button type="submit" id="works" class="index_button" onclick="window.location.href='{% url 'about' %}'">Tell me more!</button>
+			<button type="button" id="register" class="index_button" onclick="window.location.href='{% url 'register_user' %}'">Sign Me Up!</button>
+		</div>
+		 <!-- <ul>
 		  <li>Tornado Warning</li>
 		  <li>Severe Thunderstorm Warning</li>
 		  <li>Flash Flood Warning</li>
-		</ul>
+		</ul> -->
 	</div>
 	<img id="cell_phone" src="{% static 'cell_phone.png' %}">
-	<button type="submit" id="works" class="index_button" href="{% url 'home' %}">How Does This Work?</button>
-	<button type="button" id="register" class="index_button" onclick="window.location.href='{% url 'register_user' %}'">Sign Me Up!</button>
 </div>
 
 

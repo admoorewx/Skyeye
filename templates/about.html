@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<header>
+	<link href="{% static 'about.css' %}" rel="stylesheet">
+</header>
+<div id="image_bar_background">
+	<div id="image_bar">
+		<div id="logo_holder">
+			<img id="logo" src="{% static 'logo_2_circle.png' %}">
+		</div>
+		<h3 id="name" class="bar_text">SKY EYE</h3>
+		<h7 id="slogan" class="bar_text">Warning Text Service</h7>
+		<img id="bar_img1" class="bar_img" src="{% static 'tornado.JPG' %}">
+		<img id="bar_img2" class="bar_img" src="{% static 'supercell.JPG' %}">
+		<img id="bar_img3" class="bar_img" src="{% static 'hail.jpg' %}">
+	</div>
+</div>
+<div id="text_info">
+	<h2>About Sky Eye: Our Goal</h2><br/>
+	<p class="A">No matter where you live in the United States, severe weather can occur. The best way to keep yourself and your family safe is by staying one step ahead of the weather. Sky Eye helps you do just that. By receiving our text notifications you're bolstering your situational awareness so you can take action ahead of tornadoes, severe thunderstorms, and flash floods.</p><br/>
+	<h2>Frequently Asked Questions</h2><br/>
+  <h4 class="Q">Q: What exactly does Sky Eye do?</h4>
+	<p class="A">A: When a severe thunderstorm, tornado, or flash flood warning is issued by one of the many National Weather Service offices, Sky Eye will check to see if your designated location (set in your user profile) is inside the warning polygon. If it is, Sky Eye will send you a text notifying you of the hazard.</p><br/>
+	<h4 class="Q">Q: I already receive EAS notifications, why do I need Sky Eye?</h4>
+	<p class="A">A: The Emergency Alert System (EAS) is a great situational awareness tool, but may not activate for every severe thunderstorm or flash flood warning (depening on severity). Sky Eye will send a notification if your designated location is in a warning regardless of severity.</p><br/>
+  <h4 class="Q">Q: Does Sky Eye cost money?</h4>
+	<p class="A">A: At this time, no, it does not cost money to sign up for a Sky Eye account. Sky Eye is still considered in "alpha", meaning that it is still in testing mode. Our programmers continue to look for bugs and develop new tools and products to help you stay ahead of hazardous weather! In the future, Sky Eye will transition to a subscription-based model. Users will be notified of this change, and will have the option of opting out before the switchover.</p><br/>
+  <h4 class="Q">Q: Why am I getting multiple text notifications about the same storm?</h4>
+  <p class="A">A: Sometimes forecasters at a National Weather Service office will update an ongoing warning with new information about a potential hazard. Sky Eye may send you multiple alerts about the same storm if new hazard information is available.</p>
+  <p class="A">For example, if weather spotter observes a tornado in an ongoing tornado warning, the NWS office will update the warning to notify the public of confirmed tornado. Sky Eye will convey this information in the form of an additional text message.</p><br/>
+  <h4 class="Q">Q: Will Sky Eye still work when I'm not at my designated alert location?</h4>
+  <p class="A">A: Currently, Sky Eye is designed to send you a text message only when your designated location falls under a severe thunderstorm, tornado, or flash flood warning. If your designated location is under a warning while you are away, you will still receive a text notification. Likewise, you will not receive a text notification if you are away from your designated location and your current location falls under a weather warning.</p><br/>
+	<h4 class="Q">Q: Should I rely entirely on Sky Eye notifications to receive warnings?</h4>
+  <p class="A">A: No. Nearly all experts recommend that you have multiple ways of receiving NWS warnings. Sky Eye provides one option, but other options include using a <a href="https://www.weather.gov/nwr/" target="_blank" rel="noopener noreferrer">NOAA weather radio</a> or mobile weather applications.</p><br/>
+</div>
+{% endblock %}

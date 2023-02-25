@@ -1,0 +1,78 @@
+body{
+	background-color: #333c4aff;
+  color: white;
+}
+
+#map{
+  height: 300px;
+  width: 90%;
+  left: 5%;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+}
+
+#create_content{
+  position: absolute;
+  top: 100px;
+  left: 35vw;
+  width: 30vw;
+  min-width: 500px;
+  height: 625px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #3d424a;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  box-shadow: 3px 3px 3px black;
+  text-align: center;
+}
+
+#dont_create{
+	position: absolute;
+  top: 100px;
+  left: 35vw;
+  width: 30vw;
+  min-width: 500px;
+  height: 200px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #3d424a;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  box-shadow: 3px 3px 3px black;
+  text-align: center;
+}
+
+#submitbutton{
+  position: absolute;
+  left: 35%;
+  width: 30%
+}
+
+#text{
+  padding-left: 5%;
+  text-align: left;
+}
+
+#lower_buttons_denied{
+	position: absolute;
+	top: 150px;
+	left: 25%;
+	width: 50%;
+	height: 50px;
+}
+
+.link{
+  background-color: #333c4aff;
+  color: white;
+  padding: 10px 20px;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px black;
+  text-decoration: none;
+}

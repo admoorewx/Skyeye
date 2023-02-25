@@ -146,7 +146,7 @@ def can_tor_template(alert):
 	message = f'Sky Eye Weather Alert:\n' \
 			  f'The Tornado Warning for your location has been canceled.\n'\
 			  f'Your location is no longer under a tornado warning.\n\n'\
-			  f'{alert['properties']['description']}\n\n'\
+			  f'{alert["properties"]["description"]}\n\n'\
 			  f'For more information go to www.weather.gov/{wfo}.\n'\
 			  f'To opt out of these messages or change your\n'\
 			  f'settings, log in to www.skyeye.com.'
@@ -157,7 +157,7 @@ def exp_tor_template(alert):
 	message = f'Sky Eye Weather Alert:\n' \
 			  f'The Tornado Warning for your location has been allowed to expire.\n'\
 			  f'Your location is no longer under a tornado warning.\n\n'\
-			  f'{alert['properties']['description']}\n\n'\
+			  f'{alert["properties"]["description"]}\n\n'\
 			  f'For more information go to www.weather.gov/{wfo}.\n'\
 			  f'To opt out of these messages or change your\n'\
 			  f'settings, log in to www.skyeye.com.'

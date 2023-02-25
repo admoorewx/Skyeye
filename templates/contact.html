@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<header>
+	<link href="{% static 'contact.css' %}" rel="stylesheet">
+</header>
+<div id="image_bar_background">
+	<div id="image_bar">
+		<div id="logo_holder">
+			<img id="logo" src="{% static 'logo_2_circle.png' %}">
+		</div>
+		<h3 id="name" class="bar_text">SKY EYE</h3>
+		<h7 id="slogan" class="bar_text">Warning Text Service</h7>
+		<img id="bar_img1" class="bar_img" src="{% static 'tornado.JPG' %}">
+		<img id="bar_img2" class="bar_img" src="{% static 'supercell.JPG' %}">
+		<img id="bar_img3" class="bar_img" src="{% static 'hail.jpg' %}">
+	</div>
+</div>
+<div id="text_info">
+	<h3>Find a bug? Have a question or feedback?</h3>
+  <h4>Send us an email!</h4><br/>
+	<p>skyeyealerts@gmail.com</p><br/>
+	<p>The Sky Eye team will typically respond within 48 hours.</p>
+</div>
+{% endblock %}

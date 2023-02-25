@@ -34,7 +34,8 @@
         <p id="profile_lat" style="display:none">Latitude: {{ form.lat }}</p>
         <p id="profile_lon" style="display:none">Longitude: {{ form.lon }}</p>
         <p id="phone_carrier" style="display:none">{{ form.carrier }}</p>
-        <button id="submitbutton" type="submit" class="btn btn-primary">Continue</button>
+        <p>Note: By clicking the "Complete Registration" button below you are agreeing to Sky Eye's <a href="{% url 'agreement' %}" target="_blank" rel="noopener noreferrer">user agreement</a>.</p>
+        <button id="submitbutton" type="submit" class="btn btn-primary">Complete Registration</button>
       </form>
   {% else %}
     <div id="dont_create">

@@ -26,7 +26,7 @@ def login_user(request,*args,**kwargs):
 			messages.success(request,"Invalid username and/or password.")
 			return redirect('login')
 	else:
-		return render(request,"authenticate/login.html",{})
+		return render(request,"authenticate/login.html",{"title": "Sky Eye Login"})
 
 
 def logout_user(request, *args, **kwargs):
@@ -50,6 +50,7 @@ def register_user(request,*args,**kwargs):
 	else:
 		form = RegisterUserForm()
 	context = {
+		"title": "Sky Eye Register",
 		'form': form,
 	}
 	return render(request,"authenticate/register_user.html",context)
@@ -69,6 +70,7 @@ def create_profile(request,*args,**kwargs):
 	else:
 		form = CreateProfileForm()
 	context = {
+		"title": "Sky Eye Register",
 		'form': form,
 	}
 	return render(request,"profiles/create_profile.html",context)
@@ -126,6 +128,7 @@ def edit_profile(request,*args,**kwargs):
 			form1 = EditUserForm(initial=initial_dict1)
 			form2 = EditProfileForm(initial=initial_dict2)
 		context = {
+			"title": "Sky Eye Edit Profile",
 			'form1': form1,
 			'form2': form2,
 			'profile': profile,
@@ -140,9 +143,10 @@ def view_profile(request,*args,**kwargs):
 		user_id = request.user.id
 		profile = Profile.objects.get(user_id=user_id)
 		context = {
+			"title": "Sky Eye Profile",
 			'profile': profile,
 			'user': request.user,
 		}
 	except:
-		context = {}
+		context = {"title": "Sky Eye Profile"}
 	return render(request, "profiles/view_profile.html",context)

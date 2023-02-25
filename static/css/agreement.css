@@ -22,9 +22,9 @@ body{
 	left: 0px;
 	height: 150px;
 	width: 100%;
+  min-width: 1250px;
 	background-color: black;
 	z-index: -2;
-	min-width: 1250px;
 }
 
 #image_bar{
@@ -33,7 +33,7 @@ body{
 	left: 20vw;
 	height: 150px;
 	width: 60vw;
-	min-width: 1440px;
+	min-width: 1050px;
 }
 
 .bar_img{
@@ -85,48 +85,19 @@ body{
 	padding-right: 20px;
 }
 
-#details{
-	position: absolute;
-	top: 275px;
-	left: 20vw;
-	height: 600px;
-	width: 60vw;
-	min-width: 900px;
-	/* border-radius: 1px;
-	border-style: solid;
-	border-color: black; */
-}
 
 #text_info{
 	position: absolute;
-	/* left: 250px; */
-	left: 5%;
-	top: 0px;
-	height: 350px;
-	width: 600px;
+	left: 20%;
+	top: 300px;
+	height: 200px;
+	width: 60%;
 	color: white;
 	font-size: 20px;
-	text-align: center;
+	text-align: left;
 	padding-right: 50px;
 }
 
-#cell_phone{
-	position: absolute;
-	/* left: 800px; */
-	right: 20%;
-	top: 10px;
-	height: 250px;
-	width: 150px;
-	transform: rotate(15deg);
-}
-
-#lower_buttons{
-	position: absolute;
-	top: 325px;
-	left: 0%;
-	width: 100%;
-	height: 50px;
-}
 
 .index_button{
 	background-color: #666666;
@@ -140,4 +111,12 @@ body{
 .index_button:hover{
 	background-color: #d5d5d5;
 	color: black;
+}
+
+.Q{
+	color: white;
+}
+
+.A{
+	color: #C1C1C1;
 }

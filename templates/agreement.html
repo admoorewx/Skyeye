@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<header>
+	<link href="{% static 'agreement.css' %}" rel="stylesheet">
+</header>
+<div id="image_bar_background">
+	<div id="image_bar">
+		<div id="logo_holder">
+			<img id="logo" src="{% static 'logo_2_circle.png' %}">
+		</div>
+		<h3 id="name" class="bar_text">SKY EYE</h3>
+		<h7 id="slogan" class="bar_text">Warning Text Service</h7>
+		<img id="bar_img1" class="bar_img" src="{% static 'tornado.JPG' %}">
+		<img id="bar_img2" class="bar_img" src="{% static 'supercell.JPG' %}">
+		<img id="bar_img3" class="bar_img" src="{% static 'hail.jpg' %}">
+	</div>
+</div>
+<div id="text_info">
+	<h2>Sky Eye User Agreement</h2>
+	<p>Please read the following carefully</p><br/>
+	<p>By creating a Sky Eye profile you are signing up to receive text notifications at a designated phone number informing you of severe thunderstorm, tornado,
+    and/or flash flood warnings issued by a Warning Forecast Office (WFO) of the National Weather Service (NWS) that are issued for a designated location. With
+    this the user understands that such warnings are not issued by Sky Eye, therefore Sky Eye can not be held responsible for warning performance, including
+    false alarm warnings and/or missed events. Likewise, the user understands that Sky Eye remains in alpha mode, which means that systems
+    and methods for disseminating NWS warning notifications are still being actively developed and debugged, meaning that Sky Eye alerts may or may not perform
+    with 100% reliability in all situations. It is the user's responsibility to have multiple ways to receive NWS warnings in order to take appropriate action to
+    remain safe. Therefore, Sky Eye can not be held responsible for any bodily harm, property damage, or any additional consequence resulting from a severe thunderstorm,
+    tornado, or flash flood. Furthermore, Sky Eye is not responsible for any consequence that may arise from receiving or not receiving a text notification of a
+    severe weather alert.
+  </p>
+  <p>
+    Sky Eye takes user privacy seriously and will not share user location or phone number information. While Sky Eye is built with security in mind, in the event
+    of a data breach Sky Eye will notify its users or such breach and give them the option of altering their user information or discontinuing the service.
+  </p>
+</div>
+{% endblock %}
